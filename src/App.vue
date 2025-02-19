@@ -1,84 +1,176 @@
 <template>
-  <h1>Hello!</h1>
-  <!-- データを表示 -->
-  <p>{{ onamae }}</p>
+  <!-- vueに関する部分は
+  ・各入力欄にv-modelをつける
+  ・@click="checkForm"で送信ボタンの処理を結び付け
+  ・checkFormでformDataのnameを出力する
+  これらだけです
 
-  <!-- 
-  ※あくまでコンポーネント(部品)でまとめて並べれば見やすいよねという例です
-  ↓無理やりコンポーネントにしてるのでコンポーネント自体は参考にしないでください 
-  -->
+  ※デザインはCSSフレームワーク(bulma)を使用しています。 -->
 
-  <!-- Helloコンポ -->
-  <HelloWorld :msg="inputName"></HelloWorld>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>お問い合わせフォーム</title>
 
-  <!-- AddButtonコンポ -->
-  <AddButton v-model:count="count" />
-
-  <!-- 画像コンポ -->
-  <Img :img-src="imgSrc" />
-
-  <!-- v-bindコンポ -->
-  <Vbind :flag="flag" />
-
-  <!-- v-modelコンポ -->
-  <InputForm v-model:inputName="inputName" />
-
-  <!-- v-if -->
-  <Vif :flag="flag" />
-  <!-- v-show -->
-  <Vshow :flag="flag" />
-
-  <!-- 数字のv-forコンポ -->
-  <VforCount :count="count" />
-
-  <!-- 名前リストのv-forコンポ -->
-  <VforName :name-list="nameList" />
-
-  <!-- v-htmlコンポ -->
-  <Show :html-content="htmlContent" />
+    <!-- CSSフレームワークを使う -->
+    <!-- ・通常版 -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"> -->
+    <!-- ・ライトテーマのみ版 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/versions/bulma-no-dark-mode.css"
+    />
+  </head>
+  <body>
+    <div class="section">
+      <div class="container">
+        <form class="box" id="contactForm">
+          <div class="field">
+            <label class="label"
+              >お名前
+              <span style="color: red">*</span>
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="田中 太郎"
+                required
+                v-model="formData.name"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label"
+              >メールアドレス
+              <span style="color: red">*</span>
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                type="email"
+                placeholder="example@gmail.com"
+                required
+                v-model="formData.mailAddress"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">電話番号</label>
+            <div class="control">
+              <input
+                class="input"
+                type="tel"
+                placeholder="012-3456-7890"
+                v-model="formData.phoneNumber"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label"
+              >お問い合わせ内容
+              <span style="color: red">*</span>
+            </label>
+            <div class="control">
+              <div class="select">
+                <select required v-model="formData.contentCD">
+                  <option :value="0">製品について</option>
+                  <option :value="1">商品について</option>
+                  <option :value="2">なんとなく</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label"
+              >お問い合わせ詳細
+              <span style="color: red">*</span>
+            </label>
+            <div class="control">
+              <textarea
+                class="textarea"
+                cols="30"
+                rows="5"
+                placeholder="お問い合わせの詳細を記入してください"
+                required
+                v-model="formData.contentDetail"
+              ></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label"
+              >送信前の確認
+              <span style="color: red">*</span>
+            </label>
+            <div class="control">
+              <label class="checkbox">
+                <input
+                  type="checkbox"
+                  id="checkPrivacy"
+                  v-model="formData.isConsent"
+                />
+                <a href="">プライバシーポリシー</a>
+                に同意する
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label"
+              >もひとつ確認
+              <span style="color: red">*</span>
+            </label>
+            <p class="help">
+              ご回答までに最低でも1営業日ほどいただきますがよろしいでしょうか？
+            </p>
+            <div class="control">
+              <label class="radio">
+                <input
+                  type="radio"
+                  name="question"
+                  v-model="formData.isAllowDelay"
+                  :value="true"
+                />
+                Yes
+              </label>
+              <label class="radio">
+                <input
+                  type="radio"
+                  name="question"
+                  v-model="formData.isAllowDelay"
+                  :value="false"
+                  checked
+                />
+                No
+              </label>
+            </div>
+          </div>
+          <div class="buttons">
+            <button class="button is-primary" @click="checkForm">
+              送信する
+            </button>
+            <button class="button is-link is-light">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
-import AddButton from "./components/AddButton.vue";
-import Img from "./components/example/Img.vue";
-import InputForm from "./components/example/InputForm.vue";
-import Vif from "./components/example/Vif.vue";
-import Vshow from "./components/example/Vshow.vue";
-import VforCount from "./components/example/VforCount.vue";
-import VforName from "./components/example/VforName.vue";
-import Show from "./components/example/Show.vue";
-import Vbind from "./components/example/Vbind.vue";
+const formData = ref({
+  name: "",
+  mailAddress: "",
+  phoneNumber: "",
+  contentCD: 0,
+  contentDetail: "",
+  isConsent: false,
+  isAllowDelay: false,
+});
 
-// 普通の変数・定数
-let onamae = "田中";
-console.log(onamae);
-
-const nameList = ["田中太郎", "鈴木次郎", "山田三郎"];
-const htmlContent = "<p>HTMLコンテンツだよ！</p>";
-const imgSrc = "画像のURL";
-
-// 入力されたデータを入れる
-const inputName = ref("yamada");
-
-const flag = ref(false);
-const count = ref(0);
-// ボタン押したら
-// ・countを+1
-// ・true⇔false変わる
-function buttonClick() {
-  count.value++;
-  flag.value = !flag.value;
-  alert(`${count.value}回押したよう`);
+function checkForm() {
+  alert(formData.value.name);
 }
 </script>
 
-<style scoped>
-h1 {
-  color: red;
-}
-.font-red {
-  color: red;
-}
-</style>
+<style scoped></style>
