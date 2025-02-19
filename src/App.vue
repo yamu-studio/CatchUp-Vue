@@ -3,54 +3,53 @@
   <!-- データを表示 -->
   <p>{{ onamae }}</p>
 
-  <!-- v-on -->
-  <button v-on:click="buttonClick">button</button>
-  <!-- 省略系 -->
-  <button @click="buttonClick">button</button>
-  <p>{{ count }}回押した</p>
+  <!-- 
+  ※あくまでコンポーネント(部品)でまとめて並べれば見やすいよねという例です
+  ↓無理やりコンポーネントにしてるのでコンポーネント自体は参考にしないでください 
+  -->
 
-  <!-- コンポーネント -->
+  <!-- Helloコンポ -->
   <HelloWorld :msg="inputName"></HelloWorld>
 
-  <!-- propsとemitを使う場合
-  <AddButton :count="count" @clicked="buttonClick"></AddButton> -->
-  <!-- v-modelでやる場合 -->
-  <AddButton v-model:count="count"></AddButton>
+  <!-- AddButtonコンポ -->
+  <AddButton v-model:count="count" />
 
-  <!-- v-bind ⇒単方向バインド -->
-  <img v-bind:src="imgSrc" alt="" />
-  <img :src="imgSrc" alt="" />
-  <p v-bind:class="{ 'font-red': flag }">あいうえお</p>
+  <!-- 画像コンポ -->
+  <Img :img-src="imgSrc" />
 
-  <!-- v-model ⇒双方向バインド -->
-  <input v-model="inputName" type="text" name="" id="" />
-  <!-- ※v-bindはダメ... -->
-  <!-- <input v-bind:value="inputName" type="text" name="" id="" /> -->
+  <!-- v-bindコンポ -->
+  <Vbind :flag="flag" />
 
-  <!-- v-if ⇒falseで要素が消える -->
-  <p v-if="flag">trueの時(v-if)</p>
-  <!-- v-show ⇒falseで要素が見えなくなる -->
-  <p v-show="flag">trueの時(v-show)</p>
+  <!-- v-modelコンポ -->
+  <InputForm v-model:inputName="inputName" />
 
-  <!-- v-for -->
-  <p v-for="n in count">{{ n }}</p>
-  <p v-for="name in nameList">{{ name }}さん</p>
+  <!-- v-if -->
+  <Vif :flag="flag" />
+  <!-- v-show -->
+  <Vshow :flag="flag" />
 
-  <!-- v-forとv-ifの組み合わせ例 -->
-  <div v-for="n in nameList">
-    <p v-if="n == '鈴木次郎'">{{ n }} さんだよ！</p>
-    <p v-else-if="n == '田中太郎'">{{ n }}じゃん！</p>
-    <p v-else>その他</p>
-  </div>
+  <!-- 数字のv-forコンポ -->
+  <VforCount :count="count" />
 
-  <!-- v-html -->
-  <div v-html="htmlContent"></div>
+  <!-- 名前リストのv-forコンポ -->
+  <VforName :name-list="nameList" />
+
+  <!-- v-htmlコンポ -->
+  <Show :html-content="htmlContent" />
 </template>
 
 <script setup>
 import { ref } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import AddButton from "./components/AddButton.vue";
+import Img from "./components/example/Img.vue";
+import InputForm from "./components/example/InputForm.vue";
+import Vif from "./components/example/Vif.vue";
+import Vshow from "./components/example/Vshow.vue";
+import VforCount from "./components/example/VforCount.vue";
+import VforName from "./components/example/VforName.vue";
+import Show from "./components/example/Show.vue";
+import Vbind from "./components/example/Vbind.vue";
 
 // 普通の変数・定数
 let onamae = "田中";
