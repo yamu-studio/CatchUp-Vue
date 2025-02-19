@@ -1,7 +1,7 @@
 <template>
   <h1>Hello!</h1>
   <!-- データを表示 -->
-  <p>{{ name }}</p>
+  <p>{{ onamae }}</p>
 
   <!-- v-on -->
   <button v-on:click="buttonClick">button</button>
